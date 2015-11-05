@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D21E3E441BA4ED450080C3F1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D21E3E431BA4ED450080C3F1 /* main.cpp */; };
 		D21E3E4C1BA626CE0080C3F1 /* qqlogin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D21E3E4A1BA626CE0080C3F1 /* qqlogin.cpp */; };
+		D2276CED1BE98ADB00F0B860 /* fetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2276CEB1BE98ADB00F0B860 /* fetcher.cpp */; };
 		D28EFBED1BDF3AB6002C052D /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D28EFBEC1BDF3AB6002C052D /* libcurl.tbd */; };
 /* End PBXBuildFile section */
 
@@ -29,7 +30,10 @@
 		D21E3E431BA4ED450080C3F1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D21E3E4A1BA626CE0080C3F1 /* qqlogin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = qqlogin.cpp; sourceTree = "<group>"; };
 		D21E3E4B1BA626CE0080C3F1 /* qqlogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qqlogin.h; sourceTree = "<group>"; };
+		D2276CEB1BE98ADB00F0B860 /* fetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fetcher.cpp; sourceTree = "<group>"; };
+		D2276CEC1BE98ADB00F0B860 /* fetcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = fetcher.hpp; sourceTree = "<group>"; };
 		D28EFBEC1BDF3AB6002C052D /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
+		D2FB50801BEB2C1F0045696F /* threadtool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threadtool.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +68,10 @@
 		D21E3E421BA4ED450080C3F1 /* qqlogin */ = {
 			isa = PBXGroup;
 			children = (
+				D2FB50801BEB2C1F0045696F /* threadtool.h */,
 				D21E3E431BA4ED450080C3F1 /* main.cpp */,
+				D2276CEB1BE98ADB00F0B860 /* fetcher.cpp */,
+				D2276CEC1BE98ADB00F0B860 /* fetcher.hpp */,
 				D21E3E4A1BA626CE0080C3F1 /* qqlogin.cpp */,
 				D21E3E4B1BA626CE0080C3F1 /* qqlogin.h */,
 			);
@@ -128,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D21E3E441BA4ED450080C3F1 /* main.cpp in Sources */,
+				D2276CED1BE98ADB00F0B860 /* fetcher.cpp in Sources */,
 				D21E3E4C1BA626CE0080C3F1 /* qqlogin.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,7 +230,13 @@
 					"$(inherited)",
 					/usr/local/lib,
 				);
-				"OTHER_LDFLAGS[arch=*]" = "-ljsoncpp";
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-ljsoncpp",
+					"-lboost_regex",
+					"-lmongoclient",
+					"-lboost_system",
+					"-lboost_thread-mt",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -235,6 +249,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/lib,
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-ljsoncpp",
+					"-lboost_regex",
+					"-lmongoclient",
+					"-lboost_system",
+					"-lboost_thread-mt",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

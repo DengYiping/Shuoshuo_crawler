@@ -11,6 +11,7 @@
 namespace qqlogin{
   //----------class QQ_info
   void QQ_info::calculate_g_tk(){
+    long long g_tk;
     long long hash = 5381;
     auto len = skey.length();
     for(int i = 0; i < len; ++i)
@@ -18,26 +19,29 @@ namespace qqlogin{
       hash += (hash<<5) + (int)skey[i];
     }
     g_tk = hash & 0x7fffffff;
-  }
-  
-  QQ_info::QQ_info(std::string qq_num, std::string qq_skey, std::string pt_server){
-    skey = qq_skey;
-    qq_number = qq_num;
-    server_addr = pt_server;
-    calculate_g_tk();
     g_tk_str = std::to_string(g_tk);
   }
   
-  std::string QQ_info::get_cookie(){
+  QQ_info::QQ_info(std::string qq_num, std::string qq_skey){
+    skey = qq_skey;
+    qq_number = qq_num;
+    calculate_g_tk();
+  }
+  
+  std::string QQ_info::get_cookie() const{
     std::string cookie;
-    std::string o_cookie = "o_cookie=" + qq_number +"; ";
-    std::string ptui_loginuin = "ptui_loginuin=" + qq_number +"; ";
-    std::string pt2gguin = "pt2gguin=o0" + qq_number + "; ";
     std::string uin = "uin=o0" + qq_number + "; ";
     std::string cookie_skey = "skey=" + skey + "; ";
-    std::string pt_serverip = "pt_serverip=" + server_addr + "; ";
-    cookie = o_cookie + pt_serverip + ptui_loginuin + pt2gguin + uin + cookie_skey;
+    cookie = uin + cookie_skey;
     return cookie;
   }
+  
+  std::string QQ_info::get_url(std::string qq_num) const{
+    const std::string first("taotao.qq.com/cgi-bin/emotion_cgi_msglist_v6?uin=");
+    const std::string middle("&num=2&replynum=100&format=jsonp&g_tk=");
+    std::string final = first + qq_num + middle + g_tk_str;
+    return final;
+  }
+  
   
 }
