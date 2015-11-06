@@ -9,25 +9,45 @@
 #include <iostream>
 #include "qqlogin.h"
 #include "fetcher.hpp"
-
+#include "threadtool.h"
+#include <regex>
+void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue);
 int main(int argc, const char * argv[]) {
   // insert code here...
   curl_global_init(CURL_GLOBAL_ALL);
   mongo::client::GlobalInstance mongoguard;
-  qqlogin::QQ_info new_qq(std::string("649899819"), std::string("@iEWIg1Cdk"));
-  fetch::Fetcher new_fetcher(new_qq);
-  std::string qq_num = "7896178";
-  auto msglist = new_fetcher.parsed_json(qq_num)["msglist"][0];
+  threadtool::Threadsafe_queue<std::string>* qq_queue = new threadtool::Threadsafe_queue<std::string>;
+  
+  std::string start_qq = "7896178";
+  qq_queue->push(start_qq);
+  
+  for(int i = 0; i < 30; i++){
+    std::thread new_thread(thread_main,qq_queue);
+    new_thread.detach();
+  }
+  std::thread new_thread(thread_main,qq_queue);
+  new_thread.join();
+  
+error_cleanup:
+  curl_global_cleanup();
+  return EXIT_SUCCESS;
+}
+
+void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue){
   mongo::DBClientConnection client;
   try{
     client.connect("localhost");
   } catch(const mongo::DBException &e ){
     std::cerr<< e.what() << std::endl;
-    goto error_cleanup;
   }
-  std::cout<<msglist.toStyledString()<<std::endl;
-  
-error_cleanup:
-  curl_global_cleanup();
-  return EXIT_SUCCESS;
+  qqlogin::QQ_info new_qq(std::string("649899819"), std::string("@TFaQORCJm"));
+  fetch::Fetcher new_fetcher(new_qq, qq_queue);
+  while(1){
+    auto it = new_fetcher.parsed_json(*(qq_queue->wait_pop()))["msglist"][0];
+    if (it.empty() == 0){
+      fetch::Shuoshuo new_shuoshuo(it);
+      auto it2 = new_shuoshuo.toBSON();
+      client.insert("dbs.qq", it2);
+    }
+  }
 }
