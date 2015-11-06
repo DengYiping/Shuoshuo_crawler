@@ -11,6 +11,7 @@
 		D21E3E4C1BA626CE0080C3F1 /* qqlogin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D21E3E4A1BA626CE0080C3F1 /* qqlogin.cpp */; };
 		D2276CED1BE98ADB00F0B860 /* fetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D2276CEB1BE98ADB00F0B860 /* fetcher.cpp */; };
 		D28EFBED1BDF3AB6002C052D /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D28EFBEC1BDF3AB6002C052D /* libcurl.tbd */; };
+		D2FB50821BEC675D0045696F /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = D2FB50811BEC675D0045696F /* Makefile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,7 @@
 		D2276CEC1BE98ADB00F0B860 /* fetcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = fetcher.hpp; sourceTree = "<group>"; };
 		D28EFBEC1BDF3AB6002C052D /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D2FB50801BEB2C1F0045696F /* threadtool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threadtool.h; sourceTree = "<group>"; };
+		D2FB50811BEC675D0045696F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				D2276CEC1BE98ADB00F0B860 /* fetcher.hpp */,
 				D21E3E4A1BA626CE0080C3F1 /* qqlogin.cpp */,
 				D21E3E4B1BA626CE0080C3F1 /* qqlogin.h */,
+				D2FB50811BEC675D0045696F /* Makefile */,
 			);
 			path = qqlogin;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 			files = (
 				D21E3E441BA4ED450080C3F1 /* main.cpp in Sources */,
 				D2276CED1BE98ADB00F0B860 /* fetcher.cpp in Sources */,
+				D2FB50821BEC675D0045696F /* Makefile in Sources */,
 				D21E3E4C1BA626CE0080C3F1 /* qqlogin.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
