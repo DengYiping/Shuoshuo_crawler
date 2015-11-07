@@ -20,7 +20,7 @@ namespace qqlogin{
     std::string g_tk_str;
     void calculate_g_tk();
   public:
-    explicit QQ_info(std::string qq_num, std::string qq_skey); //constrcutor
+    QQ_info(std::string qq_num, std::string qq_skey); //constrcutor
     QQ_info() {}
     QQ_info& operator = (const QQ_info& second) {
       qq_number = second.qq_number;

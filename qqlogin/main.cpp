@@ -11,21 +11,34 @@
 #include "fetcher.hpp"
 #include "threadtool.h"
 #include <regex>
-void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue);
+void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::string* qq, std::string* skey);
 int main(int argc, const char * argv[]) {
   // insert code here...
   curl_global_init(CURL_GLOBAL_ALL);
   mongo::client::GlobalInstance mongoguard;
   threadtool::Threadsafe_queue<std::string>* qq_queue = new threadtool::Threadsafe_queue<std::string>;
   
-  std::string start_qq = "7896178";
+  std::string start_qq;
+  std::string session_qq;
+  std::string session_skey;
+  
+  std::cout<<"Please enter the initial qq number to crawling"<<std::endl;
+  std::cin>>start_qq;
+  
+
+  std::cout<<"Please enter the qq number in order to crawl"<<std::endl;
+  std::cin>>session_qq;
+  std::cout<<"Please enter the skey in order to crawl"<<std::endl;
+  std::cin>>session_skey;
+  
+  
   qq_queue->push(start_qq);
   
   for(int i = 0; i < 30; i++){
-    std::thread new_thread(thread_main,qq_queue);
+    std::thread new_thread(thread_main,qq_queue, &session_qq, &session_skey);
     new_thread.detach();
   }
-  std::thread new_thread(thread_main,qq_queue);
+  std::thread new_thread(thread_main,qq_queue, &session_qq, &session_skey);
   new_thread.join();
   
 error_cleanup:
@@ -33,14 +46,15 @@ error_cleanup:
   return EXIT_SUCCESS;
 }
 
-void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue){
+void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::string* qq, std::string*skey){
+  
   mongo::DBClientConnection client;
   try{
     client.connect("localhost");
   } catch(const mongo::DBException &e ){
     std::cerr<< e.what() << std::endl;
   }
-  qqlogin::QQ_info new_qq(std::string("649899819"), std::string("@TFaQORCJm"));
+  qqlogin::QQ_info new_qq(*qq, *skey);
   fetch::Fetcher new_fetcher(new_qq, qq_queue);
   while(1){
     auto it = new_fetcher.parsed_json(*(qq_queue->wait_pop()))["msglist"][0];
