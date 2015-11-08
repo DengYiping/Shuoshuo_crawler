@@ -49,11 +49,9 @@ error_cleanup:
 void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::string* qq, std::string*skey){
   
   mongo::DBClientConnection client;
-  try{
-    client.connect("localhost");
-  } catch(const mongo::DBException &e ){
-    std::cerr<< e.what() << std::endl;
-  }
+
+  client.connect("localhost");
+  printf("successfully connected to the database");
   qqlogin::QQ_info new_qq(*qq, *skey);
   fetch::Fetcher new_fetcher(new_qq, qq_queue);
   while(1){
@@ -61,7 +59,9 @@ void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::strin
     if (it.empty() == 0){
       fetch::Shuoshuo new_shuoshuo(it);
       auto it2 = new_shuoshuo.toBSON();
+      printf("new data arrived");
       client.insert("dbs.qq", it2);
+      printf("new data has been inserted to the database");
     }
   }
 }
