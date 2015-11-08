@@ -51,7 +51,7 @@ void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::strin
   mongo::DBClientConnection client;
 
   client.connect("localhost");
-  printf("successfully connected to the database");
+  printf("successfully connected to the database\n");
   auto qq_num = *qq;
   auto qq_skey = *skey;
   qqlogin::QQ_info new_qq(qq_num, qq_skey);
@@ -61,9 +61,9 @@ void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::strin
     if (it.empty() == 0){
       fetch::Shuoshuo new_shuoshuo(it);
       auto it2 = new_shuoshuo.toBSON();
-      printf("new data arrived");
+      printf("new data arrived\n");
       client.insert("dbs.qq", it2);
-      printf("new data has been inserted to the database");
+      printf("new data has been inserted to the database\n");
     }
   }
 }
