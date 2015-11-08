@@ -1,7 +1,7 @@
-CXX=g++
+CXX=g++-4.9
 CXXFLAGS=-c -Wall -std=c++11 -I/usr/include/jsoncpp
-LDFLAGS=-pthread
-LIBS= -lcurl -ljsoncpp -lmongoclient -lboost_thread -lboost_filesystem -lboost_program_options -lboost_regex -lboost_system -lpthread -lstdc++
+LDFLAGS=-pthread -v
+LIBS=  -L/usr/local/lib -lmongoclient -lboost_thread -lboost_filesystem -lboost_program_options -lboost_system  /usr/local/lib/libboost_regex.a -lcurl -lstdc++ -ljsoncpp -lssl -lcrypto -lpthread
 
 all: qq_crawler
 

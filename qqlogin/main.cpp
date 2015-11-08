@@ -11,6 +11,7 @@
 #include "fetcher.hpp"
 #include "threadtool.h"
 #include <regex>
+#include <utility>
 void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::string* qq, std::string* skey);
 int main(int argc, const char * argv[]) {
   // insert code here...
@@ -32,14 +33,13 @@ int main(int argc, const char * argv[]) {
   std::cin>>session_skey;
   
   
-  qq_queue->push(start_qq);
   
+  qq_queue->push(start_qq);
   for(int i = 0; i < 30; i++){
     std::thread new_thread(thread_main,qq_queue, &session_qq, &session_skey);
     new_thread.detach();
   }
-  std::thread new_thread(thread_main,qq_queue, &session_qq, &session_skey);
-  new_thread.join();
+  thread_main(qq_queue, &session_qq, &session_skey);
   
 error_cleanup:
   curl_global_cleanup();
@@ -49,10 +49,21 @@ error_cleanup:
 void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::string* qq, std::string*skey){
   
   mongo::DBClientConnection client;
+<<<<<<< Updated upstream
 
   client.connect("localhost");
   printf("successfully connected to the database");
   qqlogin::QQ_info new_qq(*qq, *skey);
+=======
+  try{
+    client.connect("localhost");
+  } catch(const mongo::DBException &e ){
+    std::cerr<< e.what() << std::endl;
+  }
+  auto qq_num = *qq;
+  auto qq_skey = *skey;
+  qqlogin::QQ_info new_qq(qq_num, qq_skey);
+>>>>>>> Stashed changes
   fetch::Fetcher new_fetcher(new_qq, qq_queue);
   while(1){
     auto it = new_fetcher.parsed_json(*(qq_queue->wait_pop()))["msglist"][0];
