@@ -49,21 +49,12 @@ error_cleanup:
 void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::string* qq, std::string*skey){
   
   mongo::DBClientConnection client;
-<<<<<<< Updated upstream
 
   client.connect("localhost");
   printf("successfully connected to the database");
-  qqlogin::QQ_info new_qq(*qq, *skey);
-=======
-  try{
-    client.connect("localhost");
-  } catch(const mongo::DBException &e ){
-    std::cerr<< e.what() << std::endl;
-  }
   auto qq_num = *qq;
   auto qq_skey = *skey;
   qqlogin::QQ_info new_qq(qq_num, qq_skey);
->>>>>>> Stashed changes
   fetch::Fetcher new_fetcher(new_qq, qq_queue);
   while(1){
     auto it = new_fetcher.parsed_json(*(qq_queue->wait_pop()))["msglist"][0];
