@@ -1,9 +1,9 @@
 //
 //  threadtool.h
-//  slave
+//
 //
 //  Created by Scott Deng on 8/14/15.
-//  Copyright (c) 2015 github. All rights reserved.
+//  Copyright (c) 2015 Scott. All rights reserved.
 //
 
 #ifndef slave_threadtool_h
@@ -12,6 +12,7 @@
 #include <mutex>
 #include <queue>
 #include <stack>
+#include <condition_variable>
 
 namespace threadtool{
   template <typename T>

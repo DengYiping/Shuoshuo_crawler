@@ -1,20 +1,21 @@
-CC=clang
-CFLAGS=-c -Wall -std=c++11 -pthread -stdlib=libc++
-LDFLAGS= -lcurl -lstdc++ -lpthread -stdlib=libc++ -ljsoncpp -lmongoclient -lboost_thread -lboost_filesystem -lboost_program_options
-EXECUTABLE=qq_crawler
+CXX=g++
+CXXFLAGS=-c -Wall -std=c++11 -I/usr/include/jsoncpp
+LDFLAGS=-pthread
+LIBS= -lcurl -ljsoncpp -lmongoclient -lboost_thread -lboost_filesystem -lboost_program_options -lboost_regex -lboost_system -lpthread -lstdc++
 
 all: qq_crawler
 
 qq_crawler: main.o qqlogin.o fetcher.o
-  $(CC) $(LDFLAGS) main.o downloader.o fetcher.o -o qq_crawler
+$(CXX) $(LDFLAGS) main.o qqlogin.o fetcher.o -o qq_crawler $(LIBS)
 
 main.o: main.cpp
-  $(CC) $(CFLAGS) main.cpp
+$(CXX) $(CXXFLAGS) main.cpp
 
 fetcher.o: fetcher.cpp
-  $(CC) $(CFLAGS) fetcher.cpp
+$(CXX) $(CXXFLAGS) fetcher.cpp
 
 qqlogin.o: qqlogin.cpp
-  $(CC) $(CFLAGS) qqlogin.cpp
+$(CXX) $(CXXFLAGS) qqlogin.cpp
+
 clean:
-  rm *.o qq_crawler
+rm -f *.o qq_crawler
