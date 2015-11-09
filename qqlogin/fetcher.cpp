@@ -24,9 +24,11 @@ namespace fetch{
   Fetcher::Fetcher(const qqlogin::QQ_info& qq, threadtool::Threadsafe_queue<std::string>* qq_que){
     logined_qq = qq;
     cookie = qq.get_cookie();
-    match_json = "^_Callback\\((.*)\\);$";
+    
+    match_json = "^_Callback\\((.*)\\);$";//here is the regex pattern
     qq_queue = qq_que;
-    match_qq = "\"uin\": ?(\\d+)";
+    match_qq = "\"uin\": ?(\\d+)"; //here is the regex pattern
+    
     CURLcode code;
     easyhandle = curl_easy_init();
     if(!easyhandle) goto errors;
