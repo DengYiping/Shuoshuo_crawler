@@ -16,8 +16,9 @@
 #include <json/json.h>
 #include <functional>
 
-#include <mongo/client/dbclient.h>
-#include <mongo/bson/bson.h>
+/*
+ header for MySQL
+ */
 #include <mutex>
 #include "threadtool.h"
 //mongodb header
@@ -78,12 +79,13 @@ namespace fetch{
     long long uid;
     std::string name;
     std::string content;
-    mongo::Date_t time;
+    //time structure for MySQL
     bool is_forwarding;
     std::string forwarding_content;
   public:
     Shuoshuo(Json::Value& raw);
-    mongo::BSONObj toBSON() const;
+    //Return insert data structure for MySQL
+    
   }; // Shushu's data structure
 }
 #endif /* fetcher_hpp */

@@ -234,13 +234,7 @@
 					"$(inherited)",
 					/usr/local/lib,
 				);
-				"OTHER_LDFLAGS[arch=*]" = (
-					"-ljsoncpp",
-					"-lboost_regex",
-					"-lmongoclient",
-					"-lboost_system",
-					"-lboost_thread-mt",
-				);
+				"OTHER_LDFLAGS[arch=*]" = "-ljsoncpp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -254,13 +248,7 @@
 					"$(inherited)",
 					/usr/local/lib,
 				);
-				"OTHER_LDFLAGS[arch=*]" = (
-					"-ljsoncpp",
-					"-lboost_regex",
-					"-lmongoclient",
-					"-lboost_system",
-					"-lboost_thread-mt",
-				);
+				"OTHER_LDFLAGS[arch=*]" = "-ljsoncpp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

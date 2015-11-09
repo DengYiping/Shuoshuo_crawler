@@ -108,23 +108,15 @@ namespace fetch{
   }
 
   
-  mongo::BSONObj Shuoshuo::toBSON() const{
-    mongo::BSONObj bson;
-    if(is_forwarding == false){
-      bson = mongo::BSONObjBuilder().append("uid", uid).append("name",name).append("time",time).append("content",content).obj();
-    }
-    else{
-      bson = mongo::BSONObjBuilder().append("uid", uid).append("name",name).append("time",time).append("content",content).append("forward",forwarding_content).obj();
-    }
-    
-    return bson;
-  }
+  /*
+   constructing insert query for MySQL
+   */
   
   Shuoshuo::Shuoshuo(Json::Value& raw){
     name = raw["name"].asString();
     uid = raw["uin"].asLargestInt();
     content = raw["content"].asString();
-    time = mongo::Date_t( (raw["created_time"].asLargestInt()) * 1000 );
+    //form a MySQL time object
     auto forward_json = raw["rt_con"]["content"];
     if(forward_json.empty() == false){
       forwarding_content = forward_json.asString();

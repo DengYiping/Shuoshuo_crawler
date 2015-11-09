@@ -16,7 +16,9 @@ void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::strin
 int main(int argc, const char * argv[]) {
   // insert code here...
   curl_global_init(CURL_GLOBAL_ALL);
-  mongo::client::GlobalInstance mongoguard;
+  /*
+   MySQL globla initialization
+   */
   threadtool::Threadsafe_queue<std::string>* qq_queue = new threadtool::Threadsafe_queue<std::string>;
   
   std::string start_qq;
@@ -55,9 +57,9 @@ error_cleanup:
 
 void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::string* qq, std::string*skey){
   
-  mongo::DBClientConnection client;
-
-  client.connect("localhost");
+  /*
+   Connect to the data base for MySQL
+   */
   printf("successfully connected to the database\n");
   auto qq_num = *qq;
   auto qq_skey = *skey;
@@ -67,10 +69,10 @@ void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::strin
     auto it = new_fetcher.parsed_json(*(qq_queue->wait_pop()))["msglist"][0];
     if (it.empty() == 0){
       fetch::Shuoshuo new_shuoshuo(it);
-      auto it2 = new_shuoshuo.toBSON();
-      printf("new data arrived\n");
-      client.insert("dbs.qq", it2);
-      printf("new data has been inserted to the database\n");
+      
+      /*
+       insert into the data base for MySQL
+       */
     }
   }
 }
