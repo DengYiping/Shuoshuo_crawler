@@ -1,6 +1,8 @@
 # Shuoshuo_crawler
 A crawler for one of the most popular social network. Work correctly on Mac os with Xcode.
 It has trouble on Ubuntu to compile right now, if someone could help me to compile on Ubuntu 12.04 or 14.04, it will be great. Contact info: qq#: 649899819
+#Disclaimer
+This project's master branch will remains dormant untill the new MongoDB driver comes out. I personally spend too much time on the Mongo C++ Driver, yet it has a lot of issues. I will still continue update the progress in MySQL.
 
 #Dependency
 libjsoncpp: a fast json parser
