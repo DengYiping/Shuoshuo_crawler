@@ -90,20 +90,31 @@ namespace fetch{
     
     get(qq_num);
     std::smatch substrings;
+    std::string json_string;
     std::regex_match(data_buffer,substrings,match_json);
-    std::string json_string(std::move(substrings[1]));
-    bool parsedSuccess = reader.parse(json_string, root);
-    if(! parsedSuccess){;
-      fprintf(stderr, "error in parsing the json document");
-    }
-    else{
-      std::sregex_token_iterator iter(data_buffer.cbegin(), data_buffer.cend(), match_qq, 1);
-      std::sregex_token_iterator end;
-      for( ; iter != end; ++iter ){
-        std::string qq_nume(*iter);
-        if(!qq_filter.check_add(qq_nume)) {qq_queue->push(qq_nume); std::cout<<"new qq added:"<<qq_nume<<std::endl;}
-      }
-    }
+    if (substrings[1] != ""){
+      json_string = substrings[1];
+      bool parsedSuccess = reader.parse(json_string, root);
+      if(! parsedSuccess){;
+        fprintf(stderr, "error in parsing the json document");
+      } //the document is parsable, then iterate through the whole structure to find "uin"
+      
+      else{
+        std::sregex_token_iterator iter(json_string.cbegin(), json_string.cend(), match_qq, 1);
+        std::sregex_token_iterator end;
+        for( ; iter != end; ++iter ){
+          std::string qq_nume(*iter);
+          
+          if(!qq_filter.check_add(qq_nume)) {
+            qq_queue->push(qq_nume);
+            std::cout<<"new qq added:"<<qq_nume<<std::endl;
+          }
+          
+        }
+        
+      }//if the string is parsable
+    }//if the string is not null
+    else reader.parse(std::string(""), root); //still parse it.
     return root;
   }
 
