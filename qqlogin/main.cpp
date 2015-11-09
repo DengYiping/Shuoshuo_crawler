@@ -22,23 +22,30 @@ int main(int argc, const char * argv[]) {
   std::string start_qq;
   std::string session_qq;
   std::string session_skey;
+  int thread_num;
   
-  std::cout<<"Please enter the initial qq number to crawling"<<std::endl;
+  std::cout<<"Please enter the initial qq number as a crawling seed"<<std::endl;
   std::cin>>start_qq;
-  
-
-  std::cout<<"Please enter the qq number in order to crawl"<<std::endl;
+  if(start_qq.empty()) return -1;
+  std::cout<<"Please enter a logined qq number"<<std::endl;
   std::cin>>session_qq;
-  std::cout<<"Please enter the skey in order to crawl"<<std::endl;
+  if(session_qq.empty()) return -1;
+  std::cout<<"Please enter corresponend skey"<<std::endl;
   std::cin>>session_skey;
-  
-  
+  if(session_skey.empty()) return -1;
+  std::cout<<"Please enter number of thread"<<std::endl;
+  std::cin>>thread_num;
+  if(thread_num < 1) return -1;
   
   qq_queue->push(start_qq);
-  for(int i = 0; i < 30; i++){
-    std::thread new_thread(thread_main,qq_queue, &session_qq, &session_skey);
-    new_thread.detach();
+  if(thread_num > 1){
+    
+    for(int i = 0; i < (thread_num - 1); i++){
+      std::thread new_thread(thread_main,qq_queue, &session_qq, &session_skey);
+      new_thread.detach();
+    }
   }
+  
   thread_main(qq_queue, &session_qq, &session_skey);
   
 error_cleanup:
