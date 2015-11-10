@@ -33,3 +33,7 @@ Usage
 2.Then enter your qq number.
 
 3.Finally enter your current skey.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/DengYiping/shuoshuo_crawler/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
