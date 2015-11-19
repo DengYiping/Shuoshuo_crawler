@@ -104,18 +104,19 @@ namespace fetch{
       else{
         std::sregex_token_iterator iter(json_string.cbegin(), json_string.cend(), match_qq, 1);
         std::sregex_token_iterator end;
-        for( ; iter != end; ++iter ){
+        while (iter != end){
           std::string qq_nume(*iter);
-          
           if(!qq_filter.check_add(qq_nume)) {
             qq_queue->push(qq_nume);
             std::cout<<"new qq added:"<<qq_nume<<std::endl;
           }
+          ++iter;
         }
         
       }//if the string is parsable
     }//if the string is not null
     else {
+    errors:
       reader.parse(std::string(""), root);
       printf("the return value has some error\n");
     } //still parse it.
