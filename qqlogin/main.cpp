@@ -10,7 +10,6 @@
 #include "qqlogin.h"
 #include "fetcher.hpp"
 #include "threadtool.h"
-#include <regex>
 #include <utility>
 void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::string* qq, std::string* skey);
 int main(int argc, const char * argv[]) {

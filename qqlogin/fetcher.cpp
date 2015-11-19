@@ -9,7 +9,7 @@
 #include "fetcher.hpp"
 #include <iostream>
 #include <utility>
-#include <regex>
+
 namespace fetch{
   static Bloom_filer<1024*1024*256> qq_filter;
   
@@ -81,8 +81,8 @@ namespace fetch{
   
   std::string Fetcher::get_json(std::string &qq_num){
     get(qq_num);
-    std::smatch substrings;
-    std::regex_match(data_buffer,substrings,match_json);
+    boost::smatch substrings;
+    boost::regex_match(data_buffer,substrings,match_json);
     return substrings[1];
   }
   
@@ -91,9 +91,9 @@ namespace fetch{
     Json::Reader reader;
     
     get(qq_num);
-    std::smatch substrings;
+    boost::smatch substrings;
     std::string json_string;
-    bool isSuccess = std::regex_match(data_buffer,substrings,match_json);
+    bool isSuccess = boost::regex_match(data_buffer,substrings,match_json);
     if (isSuccess == true){
       json_string = substrings[1];
       bool parsedSuccess = reader.parse(json_string, root);
@@ -102,8 +102,8 @@ namespace fetch{
       } //the document is parsable, then iterate through the whole structure to find "uin"
       
       else{
-        std::smatch qqs;
-        while (std::regex_search (json_string,qqs,match_qq)) {
+        boost::smatch qqs;
+        while (boost::regex_search (json_string,qqs,match_qq)) {
           std::string qq_nume = qqs[1];
           if(!qq_filter.check_add(qq_nume)) {
             qq_queue->push(qq_nume);

@@ -12,10 +12,10 @@
 #include <stdio.h>
 #include <curl/curl.h>
 #include "qqlogin.h"
-#include <regex>
+
 #include <json/json.h>
 #include <functional>
-
+#include <boost/regex.hpp>
 #include <mongo/client/dbclient.h>
 #include <mongo/bson/bson.h>
 #include <mutex>
@@ -28,9 +28,9 @@ namespace fetch{
     CURL *easyhandle; //handle for curl
     std::string data_buffer; //data buffer for curl
     std::string cookie;
-    std::regex match_json;
+    boost::regex match_json;
     threadtool::Threadsafe_queue<std::string>* qq_queue;
-    std::regex match_qq;
+    boost::regex match_qq;
   public:
     Fetcher(const qqlogin::QQ_info& qq, threadtool::Threadsafe_queue<std::string>* qq_queue);
     ~Fetcher();
