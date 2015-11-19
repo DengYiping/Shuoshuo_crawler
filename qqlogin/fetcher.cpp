@@ -93,8 +93,8 @@ namespace fetch{
     get(qq_num);
     std::smatch substrings;
     std::string json_string;
-    std::regex_match(data_buffer,substrings,match_json);
-    if (substrings[1] != ""){
+    bool isSuccess = std::regex_match(data_buffer,substrings,match_json);
+    if (isSuccess == false){
       json_string = substrings[1];
       bool parsedSuccess = reader.parse(json_string, root);
       if(! parsedSuccess){;
@@ -111,7 +111,6 @@ namespace fetch{
             qq_queue->push(qq_nume);
             std::cout<<"new qq added:"<<qq_nume<<std::endl;
           }
-          
         }
         
       }//if the string is parsable
