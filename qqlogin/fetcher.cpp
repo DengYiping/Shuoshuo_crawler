@@ -27,7 +27,7 @@ namespace fetch{
     
     match_json = "^_Callback\\((.*)\\);$";//here is the regex pattern
     qq_queue = qq_que;
-    match_qq = "\"uin\": ?(\\d+)"; //here is the regex pattern
+    match_qq = "\"uin\": ?(\\d+)(.*)"; //here is the regex pattern
     
     CURLcode code;
     easyhandle = curl_easy_init();
@@ -102,6 +102,16 @@ namespace fetch{
       } //the document is parsable, then iterate through the whole structure to find "uin"
       
       else{
+        std::smatch qqs;
+        while (std::regex_search (json_string,qqs,match_qq)) {
+          std::string qq_nume = qqs[1];
+          if(!qq_filter.check_add(qq_nume)) {
+            qq_queue->push(qq_nume);
+            std::cout<<"new qq added:"<<qq_nume<<std::endl;
+          }
+          json_string = qqs[2].str();
+        } //new type of regex match
+        /*
         std::sregex_token_iterator iter(json_string.cbegin(), json_string.cend(), match_qq, 1);
         std::sregex_token_iterator end;
         while (iter != end){
@@ -111,12 +121,11 @@ namespace fetch{
             std::cout<<"new qq added:"<<qq_nume<<std::endl;
           }
           ++iter;
-        }
+        }*/
         
       }//if the string is parsable
     }//if the string is not null
     else {
-    errors:
       reader.parse(std::string(""), root);
       printf("the return value has some error\n");
     } //still parse it.
