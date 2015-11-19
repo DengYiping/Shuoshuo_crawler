@@ -94,7 +94,7 @@ namespace fetch{
     std::smatch substrings;
     std::string json_string;
     bool isSuccess = std::regex_match(data_buffer,substrings,match_json);
-    if (isSuccess == false){
+    if (isSuccess == true){
       json_string = substrings[1];
       bool parsedSuccess = reader.parse(json_string, root);
       if(! parsedSuccess){;
@@ -115,7 +115,10 @@ namespace fetch{
         
       }//if the string is parsable
     }//if the string is not null
-    else reader.parse(std::string(""), root); //still parse it.
+    else {
+      reader.parse(std::string(""), root);
+      printf("the return value has some error\n");
+    } //still parse it.
     return root;
   }
 
