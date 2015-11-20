@@ -11,7 +11,7 @@
 #include <utility>
 
 namespace fetch{
-  static Bloom_filer<1024*1024*256> qq_filter;
+  static Bloom_filer<1024*1024*1024> qq_filter;
   
   size_t curl_writer(char *data, size_t size, size_t nmemb, std::string *writerData)
   {
@@ -90,7 +90,7 @@ namespace fetch{
     Json::Value root;
     Json::Reader reader;
     
-    get(qq_num);
+    get(qq_num); //get raw data from Tencent server
     boost::smatch substrings;
     std::string json_string;
     bool isSuccess = boost::regex_match(data_buffer,substrings,match_json);
@@ -105,24 +105,12 @@ namespace fetch{
         boost::smatch qqs;
         while (boost::regex_search (json_string,qqs,match_qq)) {
           std::string qq_nume = qqs[1];
-          if(!qq_filter.check_add(qq_nume)) {
-            qq_queue->push(qq_nume);
-            std::cout<<"new qq added:"<<qq_nume<<std::endl;
+          if(!qq_filter.check_add(qq_nume)) { //bloom filter
+            qq_queue->push(qq_nume); //push into the queue
+            printf("new qq:%s\n",qq_nume.c_str()); //print out info
           }
           json_string = qqs[2].str();
-        } //new type of regex match
-        /*
-        std::sregex_token_iterator iter(json_string.cbegin(), json_string.cend(), match_qq, 1);
-        std::sregex_token_iterator end;
-        while (iter != end){
-          std::string qq_nume(*iter);
-          if(!qq_filter.check_add(qq_nume)) {
-            qq_queue->push(qq_nume);
-            std::cout<<"new qq added:"<<qq_nume<<std::endl;
-          }
-          ++iter;
-        }*/
-        
+        }
       }//if the string is parsable
     }//if the string is not null
     else {
@@ -160,4 +148,6 @@ namespace fetch{
       is_forwarding = false;
     }
   }
+  
+  
 }

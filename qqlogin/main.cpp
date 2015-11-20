@@ -11,17 +11,18 @@
 #include "fetcher.hpp"
 #include "threadtool.h"
 #include <utility>
+#include <vector>
 void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::string* qq, std::string* skey);
 int main(int argc, const char * argv[]) {
   // insert code here...
   curl_global_init(CURL_GLOBAL_ALL);
   mongo::client::GlobalInstance mongoguard;
-  threadtool::Threadsafe_queue<std::string>* qq_queue = new threadtool::Threadsafe_queue<std::string>;
   
+  threadtool::Threadsafe_queue<std::string>* qq_job_list = new threadtool::Threadsafe_queue<std::string>;
   std::string start_qq;
   std::string session_qq;
   std::string session_skey;
-  int thread_num;
+  int thread_count;
   
   std::cout<<"Please enter the initial qq number as a crawling seed"<<std::endl;
   std::cin>>start_qq;
@@ -33,19 +34,19 @@ int main(int argc, const char * argv[]) {
   std::cin>>session_skey;
   if(session_skey.empty()) return -1;
   std::cout<<"Please enter number of thread"<<std::endl;
-  std::cin>>thread_num;
-  if(thread_num < 1) return -1;
+  std::cin>>thread_count;
+  if(thread_count < 1) return -1;
   
-  qq_queue->push(start_qq);
-  if(thread_num > 1){
+  qq_job_list->push(start_qq);
+  if(thread_count > 1){
     
-    for(int i = 0; i < (thread_num - 1); i++){
-      std::thread new_thread(thread_main,qq_queue, &session_qq, &session_skey);
+    for(int i = 0; i < (thread_count - 1); i++){
+      std::thread new_thread(thread_main,qq_job_list, &session_qq, &session_skey);
       new_thread.detach();
     }
   }
   
-  thread_main(qq_queue, &session_qq, &session_skey);
+  thread_main(qq_job_list, &session_qq, &session_skey);
   
 error_cleanup:
   curl_global_cleanup();
@@ -67,9 +68,7 @@ void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::strin
     if (it.empty() == 0){
       fetch::Shuoshuo new_shuoshuo(it);
       auto it2 = new_shuoshuo.toBSON();
-      printf("new data arrived\n");
       client.insert("dbs.qq", it2);
-      printf("new data has been inserted to the database\n");
     }
   }
 }
