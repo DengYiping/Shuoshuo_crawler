@@ -19,14 +19,14 @@ int main(int argc, const char * argv[]) {
   mongo::client::GlobalInstance mongoguard;
   
   threadtool::Threadsafe_queue<std::string>* qq_job_list = new threadtool::Threadsafe_queue<std::string>;
-  std::string start_qq;
+  std::string seed_qq;
   std::string session_qq;
   std::string session_skey;
   int thread_count;
   
   std::cout<<"Please enter the initial qq number as a crawling seed"<<std::endl;
-  std::cin>>start_qq;
-  if(start_qq.empty()) return -1;
+  std::cin>>seed_qq;
+  if(seed_qq.empty()) return -1;
   std::cout<<"Please enter a logined qq number"<<std::endl;
   std::cin>>session_qq;
   if(session_qq.empty()) return -1;
@@ -37,7 +37,7 @@ int main(int argc, const char * argv[]) {
   std::cin>>thread_count;
   if(thread_count < 1) return -1;
   
-  qq_job_list->push(start_qq);
+  qq_job_list->push(seed_qq);
   if(thread_count > 1){
     
     for(int i = 0; i < (thread_count - 1); i++){
@@ -64,7 +64,7 @@ void thread_main(threadtool::Threadsafe_queue<std::string>* qq_queue, std::strin
   qqlogin::QQ_info new_qq(qq_num, qq_skey);
   fetch::Fetcher new_fetcher(new_qq, qq_queue);
   while(1){
-    auto it = new_fetcher.parsed_json(*(qq_queue->wait_pop()))["msglist"][0];
+    auto it = new_fetcher.toFiltered_json(*(qq_queue->wait_pop()))["msglist"][0];
     if (it.empty() == 0){
       fetch::Shuoshuo new_shuoshuo(it);
       auto it2 = new_shuoshuo.toBSON();

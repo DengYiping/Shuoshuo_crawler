@@ -35,8 +35,8 @@ namespace fetch{
     Fetcher(const qqlogin::QQ_info& qq, threadtool::Threadsafe_queue<std::string>* qq_queue);
     ~Fetcher();
     std::string& get(std::string& qq_num);
-    std::string get_json(std::string& qq_num);
-    Json::Value parsed_json(std::string& qq_num);
+    std::string toRaw_json(std::string& qq_num);
+    Json::Value toFiltered_json(std::string& qq_num);
   };
   
   
@@ -69,7 +69,7 @@ namespace fetch{
         return false;
       }
     }
-  }; //simple bloomfilter, not threadsafe
+  }; //simple bloomfilter, threadsafe
   
   
   

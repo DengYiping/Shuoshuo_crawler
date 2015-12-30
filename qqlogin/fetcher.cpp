@@ -79,14 +79,14 @@ namespace fetch{
     return this->data_buffer;
   }
   
-  std::string Fetcher::get_json(std::string &qq_num){
+  std::string Fetcher::toRaw_json(std::string &qq_num){
     get(qq_num);
     boost::smatch substrings;
     boost::regex_match(data_buffer,substrings,match_json);
     return substrings[1];
   }
   
-  Json::Value Fetcher::parsed_json(std::string& qq_num){
+  Json::Value Fetcher::toFiltered_json(std::string& qq_num){
     Json::Value root;
     Json::Reader reader;
     
