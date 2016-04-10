@@ -1,6 +1,9 @@
 Shuoshuo_crawler
 ----------------
 ----------------
+A new scala version has been released: https://github.com/DengYiping/shuoshuo_scala This version uses elasticsearch, and it is more easy to use, and more features will come later. I will still maintain this repo, but I will not add any new features to this free software. 
+
+
 A crawler for one of the most popular social network. Work correctly on Mac os with Xcode. The troble is been solved and is stable under Mac OS X and Ubuntu. If you need data, you can contact me. If you are using this crawler, you should know that I am not resposible for your usage, even if I create this software for academic analysis. Crawling may increase the pressure on Tencent server, please be gentle. Contact info: qq#: 649899819
 
 Disclaimer
